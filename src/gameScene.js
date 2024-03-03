@@ -39,7 +39,7 @@ class GameScene extends Phaser.Scene {
         this.player2.body.gravity.y = 500;
         this.physics.add.collider(this.player1, this.floor);
         this.physics.add.collider(this.player2, this.floor);
-        this.physics.add.collider(this.player1.body, this.player2.body, () => { this.handleCollision(); });
+        this.physics.add.collider(this.player1, this.player2, () => { this.handleCollision(); });
 
         this.player1.body.setSize(this.player1.width - 50, this.player1.height - 10, true);
         this.player2.body.setSize(this.player2.width - 50, this.player2.height - 10, true);
@@ -55,12 +55,13 @@ class GameScene extends Phaser.Scene {
     }
 
     handleCollision() {
-        if (this.player1.body.y <= this.player2.body.y - this.player2.body.height) {
+        const dif = (this.player1.body.height + this.player2.body.height) / 2 - 20;
+        if (this.player1.body.y <= this.player2.body.y - dif) {
             this.player1.setVelocityY(-300);
             this.player2.setVelocityY(300);
             this.squish(2);
         }
-        else if (this.player2.body.y <= this.player1.body.y - this.player1.body.height) {
+        else if (this.player2.body.y <= this.player1.body.y - dif) {
             this.player2.setVelocityY(-300);
             this.player1.setVelocityY(300);
             this.squish(1);
