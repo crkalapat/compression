@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
-class GameScene extends Phaser.scene {
+class GameScene extends Phaser.Scene {
     preload() {
-
+        
     }
     create() {
 
@@ -20,7 +20,7 @@ const config = {
     physics: {
         default: "arcade",
     },
-    backgroundColor: "#202020",
+    backgroundColor: "#bdeeff",
 };
 
 const compressionGame = new Phaser.Game(config);
