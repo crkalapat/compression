@@ -2,13 +2,15 @@ import Phaser from "phaser";
 
 class GameScene extends Phaser.Scene {
     preload() {
-        
+        this.load.image("floor", "assets/floor.png");
     }
     create() {
-
+        // adding floor
+        this.floor = this.physics.add.staticGroup();
+        this.floor.create(this.game.config.width/2, this.game.config.height, "floor");
     }
     update() {
-
+        
     }
 }
 
