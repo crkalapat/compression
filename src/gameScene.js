@@ -7,8 +7,8 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("floor", "assets/floor.png");
-        this.load.image("player1", "assets/player1.png");
-        this.load.image("player2", "assets/player2.png");
+        this.load.image("player1", "assets/Sprite-blue-front.png");
+        this.load.image("player2", "assets/Sprite-red-front.png");
     }
     create() {
         // adding floor
@@ -22,6 +22,10 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player1, this.floor);
         this.physics.add.collider(this.player2, this.floor);
         this.physics.add.collider(this.player1, this.player2, () => {this.handleCollision();});
+
+        this.player1.body.setSize(this.player1.width - 45, this.player1.height - 9, true);
+        this.player2.body.setSize(this.player2.width - 45, this.player2.height - 9, true); 
+
 
     }
     update() {
