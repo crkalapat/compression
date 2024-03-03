@@ -122,12 +122,12 @@ class GameScene extends Phaser.Scene {
             if (this.p1HP === 2) {
                 this.player1.setTexture("player1-2");
                 this.player1.setSize(this.player1.width - 50, this.player1.height - 10, true);
-            } else if (this.P1HP === 1) {
+            } else if (this.p1HP === 1) {
                 this.player1.setTexture("player1-3");
                 this.player1.setSize(this.player1.width - 50, this.player1.height - 6, true);  
             } else {
-                // this.scene.start("WinScene"); 
-                // this.scene.manager.update();
+                this.scene.start('WinScene'); 
+                this.scene.manager.update();
 
                 this.scene.restart();
             }
@@ -138,7 +138,7 @@ class GameScene extends Phaser.Scene {
             if (this.p2HP === 2) {
                 this.player2.setTexture("player2-2");
                 this.player2.setSize(this.player2.width - 50, this.player2.height - 10, true);
-            } else if (this.P2HP === 1) {
+            } else if (this.p2HP === 1) {
                 this.player2.setTexture("player2-3");
                 this.player2.setSize(this.player2.width - 50, this.player2.height - 6, true);        
             } else {
