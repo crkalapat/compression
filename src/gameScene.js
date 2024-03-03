@@ -23,8 +23,8 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player2, this.floor);
         this.physics.add.collider(this.player1, this.player2, () => {this.handleCollision();});
 
-        this.player1.body.setSize(this.player1.width - 45, this.player1.height - 9, true);
-        this.player2.body.setSize(this.player2.width - 45, this.player2.height - 9, true); 
+        this.player1.body.setSize(this.player1.width - 50, this.player1.height - 10, true);
+        this.player2.body.setSize(this.player2.width - 50, this.player2.height - 10, true); 
 
 
     }
@@ -33,12 +33,12 @@ class GameScene extends Phaser.Scene {
         this.movePlayer2();
     }
     handleCollision(){
-        if (this.player1.y <= this.player2.y - this.player2.height/2)
+        if (this.player1.y <= this.player2.y - this.player2.body.height)
         {
             this.player1.setVelocityY(-300);
             this.player2.setVelocityY(300);
         }
-        else if (this.player2.y <= this.player1.y - this.player1.height/2)
+        else if (this.player2.y <= this.player1.y - this.player1.body.height)
         {
             this.player2.setVelocityY(-300);
             this.player1.setVelocityY(300);
