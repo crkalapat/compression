@@ -59,7 +59,7 @@ class StartScreenScene extends Phaser.Scene {
             Phaser.Input.Keyboard.KeyCodes.BACKSPACE
         );
 
-        this.startKey.on("up", () => {this.scene.start('GameScene'); this.scene.manager.update();});
+        this.startKey.on("up", () => {this.scene.start('GameScene');});
         this.exitKey.on("up", () => {this.game.destroy();});
     }
 }

@@ -39,7 +39,7 @@ class GameScene extends Phaser.Scene {
         this.player2.body.gravity.y = 500;
         this.physics.add.collider(this.player1, this.floor);
         this.physics.add.collider(this.player2, this.floor);
-        this.physics.add.collider(this.player1, this.player2, () => { this.handleCollision(); });
+        this.physics.add.collider(this.player1.body, this.player2.body, () => { this.handleCollision(); });
 
         this.player1.body.setSize(this.player1.width - 50, this.player1.height - 10, true);
         this.player2.body.setSize(this.player2.width - 50, this.player2.height - 10, true);
@@ -51,21 +51,44 @@ class GameScene extends Phaser.Scene {
     update() {
         this.movePlayer1();
         this.movePlayer2();
+        this.outBounds();
     }
 
     handleCollision() {
-        if (this.player1.y <= this.player2.y - this.player2.body.height) {
+        if (this.player1.body.y <= this.player2.body.y - this.player2.body.height) {
             this.player1.setVelocityY(-300);
             this.player2.setVelocityY(300);
             this.squish(2);
         }
-        else if (this.player2.y <= this.player1.y - this.player1.body.height) {
+        else if (this.player2.body.y <= this.player1.body.y - this.player1.body.height) {
             this.player2.setVelocityY(-300);
             this.player1.setVelocityY(300);
             this.squish(1);
         }
     }
+    outBounds(){
+        if (this.player1.x <= -50)
+        {
+            this.player1.x = 900;
+            this.player1.y = 300;
+        }
+        else if (this.player1.x >= 1050)
+        {
+            this.player1.x = 100;
+            this.player1.y = 300;
+        }
+        if (this.player2.x <= -50)
+        {
+            this.player2.x = 900;
+            this.player2.y = 300;
+        }
+        else if (this.player2.x >= 1050)
+        {
+            this.player2.x = 100;
+            this.player2.y = 300;
+        }
 
+    }
     movePlayer1() {
         let keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         let keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -112,11 +135,11 @@ class GameScene extends Phaser.Scene {
         } else {
             this.player2.body.velocity.x = 0;
         }
-
     }
 
     squish(playerNum) {
 
+        console.log("squish");
         if (playerNum === 1) {
             this.p1HP -= 1;
             if (this.p1HP === 2) {
@@ -126,10 +149,8 @@ class GameScene extends Phaser.Scene {
                 this.player1.setTexture("player1-3");
                 this.player1.setSize(this.player1.width - 50, this.player1.height - 6, true);  
             } else {
-                this.scene.start('WinScene'); 
-                this.scene.manager.update();
-
-                this.scene.restart();
+                this.scene.stop("gameScene");
+                this.scene.start('WinSceneRed');
             }
 
         } else {
@@ -142,10 +163,8 @@ class GameScene extends Phaser.Scene {
                 this.player2.setTexture("player2-3");
                 this.player2.setSize(this.player2.width - 50, this.player2.height - 6, true);        
             } else {
-                // this.scene.start("WinScene"); 
-                // this.scene.manager.update();
-
-                this.scene.restart();
+                this.scene.stop("gameScene");
+                this.scene.start('WinSceneBlue'); 
             }
         }
     }
