@@ -8,6 +8,7 @@ class GameScene extends Phaser.Scene {
         // adding floor
         this.floor = this.physics.add.staticGroup();
         this.floor.create(this.game.config.width/2, this.game.config.height, "floor");
+        let justin = true;
     }
     update() {
         
