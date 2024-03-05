@@ -16,17 +16,23 @@ class GameScene extends Phaser.Scene {
         this.load.image("player2-2", "assets/Sprite-red-front1.png");
         this.load.image("player2-3", "assets/Sprite-red-front2.png");
 
-        //this.load.image("player1-left", "assets/blue-walk-left.png");
-        //this.load.image("player2-right", "assets/red-walk-left.png");
+        this.load.image("player1-1-left", "assets/blue-walk-left.png");
+        this.load.image("player2-1-right", "assets/red-walk-left.png");
 
-        // this.load.image("player1-right", "assets/blue-walk-right.png");
-        // this.load.image("player2-left", "assets/red-walk-right.png");
+        this.load.image("player1-1-right", "assets/blue-walk-right.png");
+        this.load.image("player2-1-left", "assets/red-walk-right.png");
 
-        // this.load.image("player1-left66", "assets/blue-walk-left66.png");
-        // this.load.image("player2-left66", "assets/red-walk-left-66.png");
+        this.load.image("player1-2-left", "assets/blue-walk-left66.png");
+        this.load.image("player2-2-left", "assets/red-walk-left-66.png");
 
-        // this.load.image("player1-right66", "assets/blue-walk-right66.png");
-        // this.load.image("player2-right66", "assets/red-walk-right-66.png");
+        this.load.image("player1-2-right", "assets/blue-walk-right66.png");
+        this.load.image("player2-2-right", "assets/red-walk-right66.png");
+
+        this.load.image("player1-3-left", "assets/blue-walk-left33.png");
+        this.load.image("player2-3-left", "assets/red-walk-left-33.png");
+
+        this.load.image("player1-3-right", "assets/blue-walk-right33.png");
+        this.load.image("player2-3-right", "assets/red-walk-right33.png");
     }
     create() {
         // adding floor
@@ -55,17 +61,22 @@ class GameScene extends Phaser.Scene {
     }
 
     handleCollision() {
-        const dif = (this.player1.body.height + this.player2.body.height) / 2 - 20;
-        if (this.player1.body.y <= this.player2.body.y - dif) {
+        const dif = ((this.player1.body.height + this.player2.body.height) / 2) - 20;
+        var width = (this.player1.body.width + this.player2.body.width) / 2; 
+        if ((this.player1.body.y <= this.player2.body.y - dif) 
+             || 
+            ( this.player1.body.y < this.player2.body.y && Math.abs(this.player1.body.x - this.player2.body.x) < width / 2)) {
             this.player1.setVelocityY(-300);
             this.player2.setVelocityY(300);
             this.squish(2);
         }
-        else if (this.player2.body.y <= this.player1.body.y - dif) {
+        else if ((this.player2.body.y <= this.player1.body.y - dif) 
+        || 
+           ( this.player2.body.y < this.player1.body.y && Math.abs(this.player1.body.x - this.player2.body.x) < width / 2)) {
             this.player2.setVelocityY(-300);
             this.player1.setVelocityY(300);
             this.squish(1);
-        }
+        } 
     }
     outBounds(){
         if (this.player1.x <= -50)
@@ -106,12 +117,22 @@ class GameScene extends Phaser.Scene {
 
         if (keyA.isDown) {
             this.player1.body.velocity.x = -200;
-            // this.player1.setTexture("player1-left");
+            this.player1.setTexture(this.getTexture(1, "left", this.p1HP));
         } else if (keyD.isDown) {
             this.player1.body.velocity.x = 200;
-            // this.player1.setTexture("player1-right");
+            this.player1.setTexture(this.getTexture(1, "right", this.p1HP));
         } else {
             this.player1.body.velocity.x = 0;
+            this.player1.setTexture(this.getTexture(1, "", this.p1HP));
+        }
+        if (this.p1HP === 3) {
+        } else if (this.p1HP === 2) {
+            this.player1.setSize(this.player1.width - 45, this.player1.height - 10, true);
+        } else if (this.p1HP === 1) {
+            this.player1.setSize(this.player1.width - 45, this.player1.height, true);  
+        } else {
+            this.scene.stop("gameScene");
+            this.scene.start('WinSceneRed');
         }
     }
 
@@ -128,14 +149,44 @@ class GameScene extends Phaser.Scene {
 
         if (this.cursors.left.isDown) {
             this.player2.body.velocity.x = -200;
-            // this.player2.setTexture("player2-right");
-
+            this.player2.setTexture(this.getTexture(2, "left", this.p2HP));
         } else if (this.cursors.right.isDown) {
             this.player2.body.velocity.x = 200;
-            // this.player2.setTexture("player2-left");
+            this.player2.setTexture(this.getTexture(2, "right", this.p2HP));
         } else {
             this.player2.body.velocity.x = 0;
+            this.player2.setTexture(this.getTexture(2, "", this.p2HP));
         }
+
+        if (this.p2HP === 3) {
+        } else if (this.p2HP === 2) {
+            this.player2.setSize(this.player2.width - 45, this.player2.height - 10, true);
+        } else if (this.p2HP === 1) {
+            this.player2.setSize(this.player2.width - 45, this.player2.height, true);  
+        } else {
+            this.scene.stop("gameScene");
+            this.scene.start('WinSceneBlue');
+        }
+    }
+
+    // playerNum is 1 or 2
+    // key is "left", "right", "standing"
+    // hp: 3 ,2,1
+    getTexture(playerNum, key, hp) {
+        // swap 1 and 3.     because hp 3 is size 1 in the player
+        if (hp === 3) {
+            hp = 1;
+        } else if (hp == 1) {
+            hp = 3;
+        }
+        if (key !== "") {
+            key = "-" + key;
+        }
+
+        // we have something like
+        // "player1-2-left"
+        var p = "player" + playerNum + "-" + hp + key;
+        return p;
     }
 
     squish(playerNum) {
@@ -143,30 +194,8 @@ class GameScene extends Phaser.Scene {
         console.log("squish");
         if (playerNum === 1) {
             this.p1HP -= 1;
-            if (this.p1HP === 2) {
-                this.player1.setTexture("player1-2");
-                this.player1.setSize(this.player1.width - 50, this.player1.height - 10, true);
-            } else if (this.p1HP === 1) {
-                this.player1.setTexture("player1-3");
-                this.player1.setSize(this.player1.width - 50, this.player1.height - 6, true);  
-            } else {
-                this.scene.stop("gameScene");
-                this.scene.start('WinSceneRed');
-            }
-
         } else {
-
             this.p2HP -= 1;
-            if (this.p2HP === 2) {
-                this.player2.setTexture("player2-2");
-                this.player2.setSize(this.player2.width - 50, this.player2.height - 10, true);
-            } else if (this.p2HP === 1) {
-                this.player2.setTexture("player2-3");
-                this.player2.setSize(this.player2.width - 50, this.player2.height - 6, true);        
-            } else {
-                this.scene.stop("gameScene");
-                this.scene.start('WinSceneBlue'); 
-            }
         }
     }
 
