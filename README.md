@@ -8,4 +8,4 @@ Player 2, Red, uses the arrow keys to move around.
 
 By jumping on another person, they get smushed down. Jump on them three times, and you win, and the game resets.
 
-If you want to play a the game online, visit https://plutolotyl.itch.io/blueprint-demo-2
+If you want to play the game online, visit https://plutolotyl.itch.io/blueprint-demo-2
